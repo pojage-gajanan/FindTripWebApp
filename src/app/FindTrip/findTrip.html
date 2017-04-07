@@ -1,0 +1,31 @@
+<div class="mainContainer">
+    <div class="img_checkin">
+        <div class="center_div">
+     <label class="label_checkin"> CHECK-IN</label></div>
+    </div>
+    <div class="formContainer">
+        <form [formGroup]="findTripForm" (ngSubmit)="RetrieveBooking()" novalidate >
+    <div class="center_div font_title">RETRIEVE YOUR</div>
+    <div class="center_div font_title">BOOKING</div>
+    <div class="center_div font_title">-</div>
+    <div class="details"><p >You can find your booking by filling out your family
+        name and the booking code in your booking confirmation.</p>
+    </div>
+    <div class="details">
+    <div class="input_div">
+        <label for="bookingCode">Booking code</label>
+        <input name="bookingCode" formControlName="bookingCode" >
+       <label class="alertcls" *ngIf="formErrors.bookingCode">{{formErrors.bookingCode}}</label>
+    </div>
+    <div class="input_div">
+         <label for="familyName">Family name</label>
+        <input name="familyName" formControlName="familyName">
+          <label class="alertcls" *ngIf="formErrors.familyName">{{formErrors.familyName}}</label>
+    </div>
+    </div>
+    <div class="submit_btn">
+        <button type="submit" [disabled]="checkButtonDisabled() " >Retrieve booking</button>
+    </div>
+</form>
+    </div>
+</div>
