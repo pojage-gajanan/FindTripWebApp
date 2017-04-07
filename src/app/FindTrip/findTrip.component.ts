@@ -4,7 +4,7 @@ import { FindTripService } from './findTrip.service';
 
 
 @Component({
-    templateUrl: 'findTrip.html',
+      templateUrl: 'findTrip.html',
     styleUrls: ['findTripStyle.css']
 })
 
@@ -76,20 +76,13 @@ export class FindTripComponent {
 
     RetrieveBooking() {
         console.log("submit clicked");
-        if (this.isBookingCodeProvided()) {
+       
             let bookingCode = this.findTripForm.get('bookingCode').value;
             this.findTripService.getBookingData(bookingCode).subscribe(res => this.bookingData = res,
             error => this.errorMessage = <any>error
                 );
             console.log(this.bookingData);
          }
-        else {
-            alert("Please provide Booking Code");
-        }
-    }
 
-    isBookingCodeProvided() {
-        return this.findTripForm.get('bookingCode').value != '';
-    }
 
 }

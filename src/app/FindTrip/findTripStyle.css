@@ -43,7 +43,10 @@
 {
     padding-top:25px;
 }
-
+.bookingcls,.familycls
+{
+    border:1px solid #767676;
+}
 .details {
    padding: 10px;
    color:#767676;

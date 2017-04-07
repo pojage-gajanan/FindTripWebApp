@@ -1,7 +1,7 @@
 <div class="mainContainer">
     <div class="img_checkin">
         <div class="center_div">
-     <label class="label_checkin"> CHECK-IN</label></div>
+     <label class="label_checkin">CHECK-IN</label></div>
     </div>
     <div class="formContainer">
         <form [formGroup]="findTripForm" (ngSubmit)="RetrieveBooking()" novalidate >
@@ -14,12 +14,12 @@
     <div class="details">
     <div class="input_div">
         <label for="bookingCode">Booking code</label>
-        <input name="bookingCode" formControlName="bookingCode" >
+        <input class="bookingcls" name="bookingCode" formControlName="bookingCode" >
        <label class="alertcls" *ngIf="formErrors.bookingCode">{{formErrors.bookingCode}}</label>
     </div>
     <div class="input_div">
          <label for="familyName">Family name</label>
-        <input name="familyName" formControlName="familyName">
+        <input name="familyName" class="familycls" formControlName="familyName">
           <label class="alertcls" *ngIf="formErrors.familyName">{{formErrors.familyName}}</label>
     </div>
     </div>
