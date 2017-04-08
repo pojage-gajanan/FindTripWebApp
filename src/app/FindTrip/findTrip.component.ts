@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input,OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FindTripService } from './findTrip.service';
-
+import {FindTripModel} from './findTripDataModel';
 
 @Component({
       templateUrl: 'findTrip.html',
     styleUrls: ['findTripStyle.css']
 })
 
-export class FindTripComponent {
+export class FindTripComponent implements OnChanges {
     findTripForm: FormGroup;
     disabled: false;
     bookingData: {};
     errorMessage: string;
-
+     @Input() findTripModel: FindTripModel;
+     submitAlert:string='';
     constructor(private findTripService: FindTripService) {
         this.creteForm();
     }
@@ -35,10 +36,16 @@ export class FindTripComponent {
         this.findTripForm.valueChanges.subscribe(data => this.OnValueChaged(data));
         this.OnValueChaged();
     }
-
+  ngOnChanges() {
+    this.findTripForm.reset({
+      bookingCode: this.findTripModel.bookingCode,
+      familyName: this.findTripModel.familyName
+    });
+  
+  }
     OnValueChaged(data?: any) {
         if (!this.findTripForm) { return; }
-
+         this.submitAlert='';
         const form = this.findTripForm;
         for (const field in this.formErrors) {
             this.formErrors[field] = '';
@@ -51,6 +58,7 @@ export class FindTripComponent {
             }
         }
     }
+
 
     formErrors = {
         'bookingCode': '',
@@ -75,14 +83,30 @@ export class FindTripComponent {
     }
 
     RetrieveBooking() {
+        this.submitAlert='';
         console.log("submit clicked");
-       
-            let bookingCode = this.findTripForm.get('bookingCode').value;
-            this.findTripService.getBookingData(bookingCode).subscribe(res => this.bookingData = res,
+          this.findTripModel = this.prepareQueryObject();
+          if(this.findTripModel){
+            this.findTripService.getBookingData(this.findTripModel).subscribe(res => this.bookingData = res,
             error => this.errorMessage = <any>error
                 );
             console.log(this.bookingData);
+        }
+              else{  
+                  this.submitAlert="Please provide Booking Code and family Name"
+               }
          }
 
+prepareQueryObject(): FindTripModel {
+    const formModel = this.findTripForm.value;
+    let queryObj: FindTripModel=null;
+    if((formModel.bookingCode!='') && (formModel.familyName!='')){
+     queryObj= {
+      bookingCode: formModel.bookingCode as string,
+      familyName: formModel.familyName as string
+    };
+    }
+    return queryObj;
+  }
 
 }

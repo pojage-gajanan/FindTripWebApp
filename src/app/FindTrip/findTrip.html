@@ -25,7 +25,9 @@
     </div>
     <div class="submit_btn">
         <button type="submit" [disabled]="checkButtonDisabled() " >Retrieve booking</button>
+      
     </div>
+    <div class="alertcls" *ngIf="submitAlert" >{{submitAlert}}</div>
 </form>
     </div>
 </div>

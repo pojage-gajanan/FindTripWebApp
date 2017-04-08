@@ -3,7 +3,7 @@ import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angul
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
-
+import {FindTripModel} from './findTripDataModel';
 
 @Injectable()
 export class FindTripService {
@@ -11,10 +11,11 @@ export class FindTripService {
 
     constructor(private http: Http) { }
 
-    getBookingData(queryParam: any) {
+    getBookingData(findTripModel: FindTripModel) {
         let params: URLSearchParams = new URLSearchParams();
-        console.log(queryParam);
-        params.set('bookingCode', queryParam);
+        console.log(findTripModel);
+        params.set('bookingCode', findTripModel.bookingCode);
+        params.set('familyName', findTripModel.familyName);
         let requestOptions = new RequestOptions();
         requestOptions.search = params;
         return this.http.get(this.url, requestOptions).map((response: Response) => response.json()).catch(this.handleError);
