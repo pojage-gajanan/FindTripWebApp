@@ -1,84 +1,106 @@
-import { async, ComponentFixture, TestBed,fakeAsync,  inject,  tick} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-  import { Component }                 from '@angular/core';
-  import { AppComponent }              from './app.component';
-  import { FindTripComponent }           from './FindTrip/findTrip.component';
-  import{FindTripModel} from './FindTrip/FindTripDataModel'
-  import { RouterLinkStubDirective }   from '../testing/router-stubs';
-  import { RouterOutletStubComponent } from '../testing/router-stubs';
+import { Component } from '@angular/core';
+import { AppComponent } from './app.component';
+import { FindTripComponent } from './FindTrip/findTrip.component';
+import { FindTripModel } from './FindTrip/FindTripDataModel'
+import { RouterLinkStubDirective } from '../testing/router-stubs';
+import { RouterOutletStubComponent } from '../testing/router-stubs';
+import { FindTripService } from './FindTrip/findTrip.service';
+import {FindTripMockService} from '../testing/FindTripMock.service';
 
-  //Import Mock Input Data (BookingCode & Family Name) for Validation testing
+//Import Mock Input Data (BookingCode & Family Name) for Validation testing
 import {
-  DefaultData,
+
+  defaultTestData,
+  validTestData,
+  minLengthBookingCodeTest,
+  maxLengthBookingCodeTest,
+  patternBookingCodeTest,
+  minLengthFamilyNameTest,
+  maxLengthFamilyNameTest,
+  patternFamilyNameTest
 
 } from '../testing/mockFindTripData';
-let comp:    AppComponent;
+let comp: AppComponent;
 let fixture: ComponentFixture<AppComponent>;
-let page:Page;
-let findTripComp:    FindTripComponent;
-let findTripFixture: ComponentFixture<FindTripComponent>;
-let defaultData:DefaultData;
 
-let expectedModel:FindTripModel;
-   let retrieveBtn: DebugElement;
-import { AppModule }    from './app.module';
+let findTripComp: FindTripComponent;
+let findTripFixture: ComponentFixture<FindTripComponent>;
+
+
+
+// let retrieveBtn: DebugElement;
+let retreiveBookingBtn: HTMLElement;
+
+let findTripService: FindTripService; // the actually injected service
+let findTripSpy: jasmine.Spy;
+import { AppModule } from './app.module';
 import { AppRouterModule } from './app-router.module';
 
 describe('AppComponent & AppModule', () => {
 
-  beforeEach( async(() => {
+
+  beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      imports: [ AppModule ]
+      imports: [AppModule],
+      providers: [FindTripService
+      //  { provide: FindTripService, useClass: FindTripMockService }
+      ]
+
     })
 
-    .overrideModule(AppModule, {
-      remove: {
-        imports: [ AppRouterModule ]
-      },
-      add: {
-        declarations: [ RouterLinkStubDirective, RouterOutletStubComponent ]
-      //  imports:[FormGroup,ReactiveFormsModule]
-      }
-    })
+      .overrideModule(AppModule, {
+        remove: {
+          imports: [AppRouterModule],
 
-    .compileComponents()
+        },
+        add: {
+          declarations: [RouterLinkStubDirective, RouterOutletStubComponent]
 
-    .then(() => {
-      fixture = TestBed.createComponent(AppComponent);
-      comp    = fixture.componentInstance;
-     findTripFixture= TestBed.createComponent(FindTripComponent);
-     findTripComp=findTripFixture.componentInstance;
+          //  imports:[FormGroup,ReactiveFormsModule]
 
-    // findTripComp.findTripModel=new FindTripModel('','');
-    // defaultData=new DefaultData('','');
-    findTripFixture.detectChanges();
-    });
+        }
+      })
+
+      .compileComponents()
+
+      .then(() => {
+        fixture = TestBed.createComponent(AppComponent);
+        comp = fixture.componentInstance;
+        findTripFixture = TestBed.createComponent(FindTripComponent);
+        findTripComp = findTripFixture.componentInstance;
+
+        // findTripService actually injected into the component
+        findTripService = findTripFixture.debugElement.injector.get(FindTripService);
+
+        findTripFixture.detectChanges();
+      });
   }));
 
   tests();
 });
 
- // create reusable function for a dry spec.
-  function updateForm(bookingCode, familyName) {
-    findTripComp.findTripForm.controls['bookingCode'].setValue(bookingCode);
-    findTripComp.findTripForm.controls['familyName'].setValue(familyName);
-  }
+// create reusable function for a dry spec.
+function updateForm(bookingCode, familyName) {
+  findTripComp.findTripForm.controls['bookingCode'].setValue(bookingCode);
+  findTripComp.findTripForm.controls['familyName'].setValue(familyName);
+}
 function tests() {
   let links: RouterLinkStubDirective[];
   let linkDes: DebugElement[];
 
   beforeEach(() => {
-  
-    retrieveBtn = findTripFixture.debugElement.query(By.css('button'));
-    page    = new Page();
-    // trigger initial data binding
+
+
     fixture.detectChanges();
     findTripFixture.autoDetectChanges();
+    findTripSpy = spyOn(findTripService, 'getBookingData');
 
- 
+
     // find DebugElements with an attached RouterLinkStubDirective
     linkDes = fixture.debugElement
       .queryAll(By.directive(RouterLinkStubDirective));
@@ -95,7 +117,7 @@ function tests() {
 
   it('should not contain routerLink in template of app Component', () => {
     expect(links.length).toBe(0, 'should not have any routerLink Element in component');
-    
+
   });
 
 
@@ -103,68 +125,87 @@ function tests() {
     expect(findTripComp).not.toBeNull();
   });
 
- let defaultData = findTripComp.findTripModel;
-
-    it('should have default bookingCode & familyName Values', fakeAsync(() => {
-    expect(findTripComp.findTripModel).toEqual(DefaultData);
+  it('default Value for form field & form Model', fakeAsync(() => {
+    updateForm(defaultTestData.bookingCode, defaultTestData.familyName);
+    expect(findTripComp.findTripForm.value).toEqual(defaultTestData);
   }));
-let validData=new DefaultData('23345','errr');
+
+
   it('form value should update from form changes--data binding between model & formControl', fakeAsync(() => {
-    updateForm(validData.bookingCode, validData.familyName);
-    expect(findTripComp.findTripForm.value).toEqual(validData);
+    updateForm(validTestData.bookingCode, validTestData.familyName);
+    expect(findTripComp.findTripForm.value).toEqual(validTestData);
   }));
- let InvalidTestData ={'bookingCode':'123456','familyName':'45DRD'};
- 
-  it('expect Retrieve booking button to be disabled when input is invalid ', () => {
-updateForm(InvalidTestData.bookingCode, InvalidTestData.familyName);
-expect( page.saveBtn.nativeElement.getAttribute('disabled')).toBeTruthy("submit button is disabled");
-      expect(findTripComp.findTripForm.valid).toBeFalsy();
-    
+
+
+  it('min length Validation check for BookingCode', fakeAsync(() => {
+    updateForm(minLengthBookingCodeTest.bookingCode, minLengthBookingCodeTest.familyName);
+    expect(findTripComp.findTripForm.valid).toBeFalsy();
+  }));
+
+
+  it('max length Validation check for BookingCode', fakeAsync(() => {
+    updateForm(maxLengthBookingCodeTest.bookingCode, maxLengthBookingCodeTest.familyName);
+    expect(findTripComp.findTripForm.valid).toBeFalsy();
+  }));
+
+  it('pattern Validation check for BookingCode', fakeAsync(() => {
+    updateForm(patternBookingCodeTest.bookingCode, patternBookingCodeTest.familyName);
+    expect(findTripComp.findTripForm.valid).toBeFalsy();
+  }));
+
+  it('min length Validation check for familyName', fakeAsync(() => {
+    updateForm(minLengthFamilyNameTest.bookingCode, minLengthFamilyNameTest.familyName);
+    expect(findTripComp.findTripForm.valid).toBeFalsy();
+  }));
+  
+  it('max length Validation check for familyName', fakeAsync(() => {
+    updateForm(maxLengthFamilyNameTest.bookingCode, maxLengthFamilyNameTest.familyName);
+    expect(findTripComp.findTripForm.valid).toBeFalsy();
+  }));
+
+  it('pattern Validation check for familyName', fakeAsync(() => {
+    updateForm(patternFamilyNameTest.bookingCode, patternFamilyNameTest.familyName);
+    expect(findTripComp.findTripForm.valid).toBeFalsy();
+  }));
+
+   it('should call the getBookingData method of FIndTripService', fakeAsync( () => {
+
+        findTripComp.RetrieveBooking();
+        tick(); 
+        expect(findTripSpy.calls.any()).toBe(true, 'FindTripService getBookingData method called');
+
+    }));
+
+  it('should update findTripDataModel on submit', fakeAsync(() => {
+    updateForm(validTestData.bookingCode, validTestData.familyName);
+    findTripFixture.detectChanges();
+    findTripComp.RetrieveBooking();
+    expect(findTripComp.findTripModel).toEqual(validTestData);
+  }));
+
+    it('should return an object of bookingDetail with Booking code ', () => {
+            findTripService.getBookingData(findTripComp.findTripModel).subscribe(res => {
+                expect(res).toEqual(jasmine.objectContaining({
+                    bookingCode: "PZIGZ3"
+                }));
+            });
+               expect(findTripService.getBookingData).toHaveBeenCalled();
+        });
+
+/*
+  it('retriev Booking button should be disabled when form is invalid', () => {
+
+
+    updateForm(patternBookingCodeTest.bookingCode, patternBookingCodeTest.familyName);
+    findTripFixture.detectChanges();
+    retreiveBookingBtn = findTripFixture.debugElement.query(By.css('button')).nativeElement;
+    findTripFixture.whenStable().then(() => {
+      expect(retreiveBookingBtn.getAttribute('disabled')).toBe(true);
+    })
+
+
   });
-
-
-
-
-// Validate submit button disable on form invalid 
- 
-/*...Validation Testing Scenarioes....*/
-
-  /*it('isValid should be false when form is invalid', fakeAsync(() => {
-    updateForm(inValidData.bookingCode, inValidData.familyName);
-    expect(findTripComp.).toBeFalsy();
-  }));*/
   
-  /*button should be disabled on Invalid Data...*/
+  */
 
- /* it('should update model on submit', fakeAsync(() => {
-    updateForm(validUser.email, validUser.password);
-    comp.onSubmit();
-    expect(comp.user).toEqual(validUser);
-  }));*/
-
-/* Service Call Test..*/
-
-}
-class Page {
-  gotoSpy:      jasmine.Spy;
-  navSpy:       jasmine.Spy;
-
-  saveBtn:      DebugElement;
-
-
-  constructor() {
-   
-    this.gotoSpy = spyOn(comp, 'gotoList').and.callThrough();
-  
-  }
-
-  /** Add page elements after hero arrives */
-  addPageElements() {
-    if (findTripComp.findTripModel) {
-      // have a hero so these elements are now in the DOM
-      const buttons    = findTripFixture.debugElement.queryAll(By.css('button'));
-      this.saveBtn     = buttons[0];
- 
-    }
-  }
 }

@@ -14,12 +14,12 @@
     <div class="details">
     <div class="input_div">
         <label for="bookingCode">Booking code</label>
-        <input class="bookingcls" name="bookingCode" formControlName="bookingCode" >
+        <input name="bookingCode" formControlName="bookingCode" >
        <label class="alertcls" *ngIf="formErrors.bookingCode">{{formErrors.bookingCode}}</label>
     </div>
     <div class="input_div">
          <label for="familyName">Family name</label>
-        <input name="familyName" class="familycls" formControlName="familyName">
+        <input name="familyName"  formControlName="familyName">
           <label class="alertcls" *ngIf="formErrors.familyName">{{formErrors.familyName}}</label>
     </div>
     </div>
