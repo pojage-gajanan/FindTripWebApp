@@ -1,5 +1,5 @@
- // export for convenience.
-export { ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
+// export for convenience.
+export { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 
 import { Component, Directive, Injectable, Input } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
@@ -19,7 +19,7 @@ export class RouterLinkStubDirective {
   }
 }
 
-@Component({selector: 'router-outlet', template: ''})
+@Component({ selector: 'router-outlet', template: '' })
 export class RouterOutletStubComponent { }
 
 @Injectable()

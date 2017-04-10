@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import { AppRouterModule } from './app-router.module';
 import { FindTripModule } from './FindTrip/findTrip.module';
 import { AppComponent } from './app.component';
-
+import { ButtonsModule } from 'ngx-bootstrap';
 @NgModule({
   declarations: [
     AppComponent

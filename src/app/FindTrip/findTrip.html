@@ -1,33 +1,42 @@
 <div class="mainContainer">
-    <div class="img_checkin">
+    <div class="img_checkin" role="banner">
         <div class="center_div">
-     <label class="label_checkin">CHECK-IN</label></div>
+            <label class="label_checkin">CHECK-IN</label>
+        </div>
     </div>
+    <div class="headerSpace"></div>
     <div class="formContainer">
-        <form [formGroup]="findTripForm" (ngSubmit)="RetrieveBooking()" novalidate >
-    <div class="center_div font_title">RETRIEVE YOUR</div>
-    <div class="center_div font_title">BOOKING</div>
-    <div class="center_div font_title">-</div>
-    <div class="details"><p >You can find your booking by filling out your family
-        name and the booking code in your booking confirmation.</p>
+           <section>
+                <div class="center_div font_title">RETRIEVE YOUR</div>
+                <div class="center_div font_title">BOOKING</div>
+                <div class="center_div font_title">-</div>
+           </section>
+            <div class="details font_detail">
+                <p role="contentinfo">You can find your booking by filling out your family name and the booking code in your booking confirmation.</p>
+                </div>
+              <form [formGroup]="findTripForm" (ngSubmit)="retrieveBooking()" role="form" novalidate >
+            <div class="details">
+                <div class="form-group">
+                    <label for="bookingCode" >Booking code</label>
+                    <input class="bookingcls form-control" id="bookingCode"  type="text" formControlName="bookingCode">
+                    <label class="alert-cls" *ngIf="formErrors.bookingCode">{{formErrors.bookingCode}}</label>
+                </div>
+                <div class="form-group">
+                    <label for="familyName">Family name</label>
+                    <input  class="familycls form-control" name="familyName"  type="text" formControlName="familyName">
+                    <label class="alert-cls" *ngIf="formErrors.familyName">{{formErrors.familyName}}</label>
+                </div>
+            </div>
+            <div class="submit_btn" role="button">
+                <button type="submit" class="btn btn-primary" style=" background-color: red;width:100%" [disabled]="checkButtonDisabled() ">Retrieve booking</button>
+            </div>
+        </form>
+        <div class="alert-cls" *ngIf="submitWarning">{{submitWarning}}</div>
     </div>
-    <div class="details">
-    <div class="input_div">
-        <label for="bookingCode">Booking code</label>
-        <input name="bookingCode" formControlName="bookingCode" >
-       <label class="alertcls" *ngIf="formErrors.bookingCode">{{formErrors.bookingCode}}</label>
-    </div>
-    <div class="input_div">
-         <label for="familyName">Family name</label>
-        <input name="familyName"  formControlName="familyName">
-          <label class="alertcls" *ngIf="formErrors.familyName">{{formErrors.familyName}}</label>
-    </div>
-    </div>
-    <div class="submit_btn">
-        <button type="submit" [disabled]="checkButtonDisabled() " >Retrieve booking</button>
-      
-    </div>
-    <div class="alertcls" *ngIf="submitAlert" >{{submitAlert}}</div>
-</form>
+    <div *ngIf="passengerName" class="passengerCls">
+        <div>Name of Passenger:<span style="font-weight:bold"> {{passengerName}}</span></div>
+        <div>Journey type:<span style="font-weight:bold"> {{type}}</span></div>
+        <div>Origin: <span style="font-weight:bold">{{origin}}</span> </div>
+        <div>Destination:<span style="font-weight:bold"> {{destination}}</span></div>
     </div>
 </div>

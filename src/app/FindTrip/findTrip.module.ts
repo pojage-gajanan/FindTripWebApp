@@ -6,11 +6,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FindTripRouterModule } from './findTrip-router.module';
 
 import { FindTripComponent } from './findTrip.component';
-import {FindTripService} from './findTrip.service';
+import { FindTripService } from './findTrip.service';
 
 @NgModule({
     declarations: [FindTripComponent],
     imports: [CommonModule, HttpModule, ReactiveFormsModule, FindTripRouterModule],
-    providers:[FindTripService]
+    providers: [FindTripService]
 })
 export class FindTripModule { }

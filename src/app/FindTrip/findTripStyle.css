@@ -1,142 +1,110 @@
-.mainContainer{
+.mainContainer
+{
     width:100%;
     margin:0 auto;
-  
+    padding:5px;
 }
+
 .img_checkin
 {
     width:100%;
-    height:50px;
     background-image: url("/assets/images/af_pattern_bg.png");
-  
+    padding:2px;
 }
+
 .center_div
 {
     margin:0 auto;
     width:180px;
-  
  }
+
 .label_checkin
 {
-    line-height:50px;
+    line-height:40px;
     color: white;
     text-align:center;
     position:relative;
     font-size:16px;
-  
+    left:25%;
 }
+
+.headerSpace
+{
+    height:35px;
+    width:100;
+    display:none;
+ }
+
+.formContainer
+{
+    margin:0 auto;
+    max-width: 275px;
+    position:relative;
+    padding-bottom:15px;
+   
+}
+
 .font_title
 {
-    
     text-align:center;
     width:100%;
-    font-weight:bolder;
-    font-size: 25px;
+    font-weight:normal;
+    font-size:2.25em;
     color:#003145;
     padding:3px;
-
-   
-    -webkit-text-stroke-width: 1px;
- 
+  /*  font-family: MyCustomFont,  sans-serif;*/
+     font-family: 'Florencesans SC Exp';
+    font-weight: bold;
+    font-style: normal;
+    
 }
-.font_title:first-of-type
+
+.details 
 {
-    padding-top:25px;
-}
-
-.details {
    padding: 10px;
    color:#767676;
-   font-weight: 500;
-  
-   margin:0 auto;
-   margin-top:-20px;
-   margin-bottom:-35px;
+    margin:0 auto;
 } 
-.submit_btn{
-    padding: 30px;
+
+.font_detail{
+    /* font-family: MyCustomFont,  sans-serif;*/
+      font-family: 'Florencesans SC Exp';
+     font-weight:bold;
+     margin-top:1px;
+     margin-bottom:1px;
+     padding-top:1px;
+     padding-bottom:1px;
+}
+
+.submit_btn
+{
    color:#767676;
    font-weight: 500;
    margin:0 auto;
     padding-bottom:5px;
-}
-
-button:hover{
-
- opacity:0.7;
-}
-.formContainer
-{
-    margin:0 auto;
-    max-width: 310px;
-    top:50px;
+    width:140px;
+    min-width: 50%;
     position:relative;
-    border:1px solid#767676;
-    padding-bottom:15px;
 }
 
-.input_div
+.alert-cls
 {
-
-
-    margin:15px;
+       font-weight:normal;
+      color:red;
 }
-p{
-   
-    padding-top:-20px;
-    padding-bottom:-20px;
-    margin:15px;
-
-}
-input
+.passengerCls
 {
-    display:block;
-    margin-bottom:15px;
-    width:98%;
-    height:25px;
-}
-label{
-   display:block;
-   margin-top:5px;
-   margin-bottom:5px;
-   color:#767676;
-   font-weight:bold;
+  
     width:100%;
+    background-image: url("/assets/images/af_pattern_bg.png");
+    color:white;
+    padding-top:20px;
 }
-
-button{
-     text-align:center;
-     width:70%;
-     background-color: #d40504;
-     position:relative;
-     height:35px;
-     color:white;
-     position:relative;
-     left:15%;
-  
-  
-}
-.alertcls{
-    font-weight:normal;
-    color:red;
-}
-@media only screen and (max-width: 320px) {
+@media (min-width: 500px) {
     .formContainer {
-        border:none;
-        position:relative;
-       padding-top:-20px;
-       top:-15px;
+      border:1px solid #767676;
     }
-   
-   button{
-     margin:0 auto;
-     text-align:center;
-     width:100%;
-     background-color: #d40504;
-     position:relative;
-     height:35px;
-     color:white;
-     left:0%;
-}
-
+    .headerSpace{
+        display:block;
+    }
 }

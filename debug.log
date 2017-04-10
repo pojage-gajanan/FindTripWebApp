@@ -1,3 +1,9 @@
 [0409/150901.867:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Users\Sanu\AppData\Local\Temp\karma-79977936\Crashpad: The system cannot find the path specified. (0x3)
 [0409/150902.070:ERROR:registration_protocol_win.cc(83)] TransactNamedPipe: The pipe has been ended. (0x6D)
 [0409/150902.073:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Users\Sanu\AppData\Local\Temp\karma-79977936\Crashpad: The system cannot find the path specified. (0x3)
+[0410/105400.847:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Users\Sanu\AppData\Local\Temp\karma-64329634\Crashpad: The system cannot find the path specified. (0x3)
+[0410/105400.940:ERROR:registration_protocol_win.cc(83)] TransactNamedPipe: The pipe has been ended. (0x6D)
+[0410/105401.067:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Users\Sanu\AppData\Local\Temp\karma-64329634\Crashpad: The system cannot find the path specified. (0x3)
+[0410/164208.520:ERROR:process_reader_win.cc(114)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights.  (0xc0000022)
+[0410/164208.768:ERROR:exception_snapshot_win.cc(87)] thread ID 4528 not found in process
+[0410/164208.768:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::Initialize failed

@@ -1,10 +1,11 @@
-import { Component, OnInit,Input,OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FindTripService } from './findTrip.service';
-import {FindTripModel} from './findTripDataModel';
+import { FindTripModel } from './findTripDataModel';
+import { validateMessages } from './findTripErrorMessages';
 
 @Component({
-      templateUrl: 'findTrip.html',
+    templateUrl: 'findTrip.html',
     styleUrls: ['findTripStyle.css']
 })
 
@@ -12,9 +13,18 @@ export class FindTripComponent implements OnChanges {
     findTripForm: FormGroup;
     disabled: false;
     bookingData: {};
+    // Passenger Detail from response
+    passengerName: string;
+    type: string;
+    origin: string;
+    destination: string;
+
+    //End of passnger details
+
     errorMessage: string;
-     @Input() findTripModel: FindTripModel;
-     submitAlert:string='';
+    @Input() findTripModel: FindTripModel;
+    submitWarning: string = '';
+
     constructor(private findTripService: FindTripService) {
         this.creteForm();
     }
@@ -33,27 +43,30 @@ export class FindTripComponent implements OnChanges {
                 Validators.pattern('[A-Za-z]{1,}'),
             ])
         })
-        this.findTripForm.valueChanges.subscribe(data => this.OnValueChaged(data));
-        this.OnValueChaged();
+        this.findTripForm.valueChanges.subscribe(data => this.onValueChaged(data));
+        this.onValueChaged();
     }
-  ngOnChanges() {
-    this.findTripForm.reset({
-      bookingCode: this.findTripModel.bookingCode,
-      familyName: this.findTripModel.familyName
-    });
-  
-  }
-    OnValueChaged(data?: any) {
+
+    ngOnChanges() {
+        this.findTripForm.reset({
+            bookingCode: this.findTripModel.bookingCode,
+            familyName: this.findTripModel.familyName
+        });
+
+    }
+
+    /* ....*** Checkinh Validation for Booking Code and FamilyName fields***..... */
+    onValueChaged(data?: any) {
         if (!this.findTripForm) { return; }
-         this.submitAlert='';
+        this.submitWarning = '';
         const form = this.findTripForm;
         for (const field in this.formErrors) {
             this.formErrors[field] = '';
             let control = form.get(field);
-            let messages = this.validateMessages[field];
+            let messages = validateMessages[field];
             if (control && control.invalid && control.dirty) {
                 for (const key in control.errors) {
-                    this.formErrors[field] += messages[key] + '';
+                    this.formErrors[field] += messages[key] + '. ';
                 }
             }
         }
@@ -65,48 +78,44 @@ export class FindTripComponent implements OnChanges {
         'familyName': ''
     }
 
-    validateMessages = {
-        'bookingCode': {
-            'minlength': 'Booking code should have minimum 5 characters',
-            'maxlength': 'Booking code should not be more than 6 characters long',
-            'pattern': 'Booking code accepts all alphabets and numeric values(2-9) only'
-        },
-        'familyName': {
-            'minlength': 'family name should have minimum 2 characters',
-            'maxlength': 'family name should not be more than 30 characters long',
-            'pattern': 'family name accepts alphabets only'
-        }
-    }
-
     checkButtonDisabled() {
         return !this.findTripForm.valid;
     }
 
-    RetrieveBooking() {
-        this.submitAlert='';
+    /* ....*** Checkinh Validation for Booking Code and FamilyName fields***..... */
+    retrieveBooking() {
+        this.submitWarning = '';
         console.log("submit clicked");
-          this.findTripModel = this.prepareQueryObject();
-          if(this.findTripModel){
-            this.findTripService.getBookingData(this.findTripModel).subscribe(res => this.bookingData = res,
-            error => this.errorMessage = <any>error
-                );
-            console.log(this.bookingData);
+        this.findTripModel = this.prepareQueryObject();
+        if (this.findTripModel) {
+            this.findTripService.getBookingData(this.findTripModel).subscribe(res => {
+                this.bookingData = res;
+                this.processResponse(this.bookingData);
+            },
+                error => this.errorMessage = <any>error
+            );
         }
-              else{  
-                  this.submitAlert="Please provide Booking Code and family Name"
-               }
-         }
-
-prepareQueryObject(): FindTripModel {
-    const formModel = this.findTripForm.value;
-    let queryObj: FindTripModel=null;
-    if((formModel.bookingCode!='') && (formModel.familyName!='')){
-     queryObj= {
-      bookingCode: formModel.bookingCode as string,
-      familyName: formModel.familyName as string
-    };
+        else {
+            this.submitWarning = "Please provide Booking Code and family Name"
+        }
     }
-    return queryObj;
-  }
+
+    prepareQueryObject(): FindTripModel {
+        const formModel = this.findTripForm.value;
+        let queryObj: FindTripModel = null;
+        if ((formModel.bookingCode != '') && (formModel.familyName != '')) {
+            queryObj = {
+                bookingCode: formModel.bookingCode as string,
+                familyName: formModel.familyName as string
+            };
+        }
+        return queryObj;
+    }
+    processResponse(data: any) {
+        this.passengerName = data["passengers"].firstName + " , " + data["passengers"].lastName;
+        this.type = data["itinerary"].type;
+        this.origin = data["itinerary"].connections[0].origin.name;
+        this.destination = data["itinerary"].connections[0].destination.name;
+    }
 
 }
