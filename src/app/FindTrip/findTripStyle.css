@@ -49,11 +49,10 @@
     text-align:center;
     width:100%;
     font-weight:normal;
-    font-size:2.25em;
+    font-size:2.0em;
     color:#003145;
     padding:3px;
-  /*  font-family: MyCustomFont,  sans-serif;*/
-     font-family: 'Florencesans SC Exp';
+    font-family: 'Florencesans SC Exp';
     font-weight: bold;
     font-style: normal;
     
@@ -62,20 +61,23 @@
 .details 
 {
    padding: 10px;
+   padding-right:5px;
    color:#767676;
     margin:0 auto;
+
 } 
 
 .font_detail{
-    /* font-family: MyCustomFont,  sans-serif;*/
-      font-family: 'Florencesans SC Exp';
-     font-weight:bold;
-     margin-top:1px;
-     margin-bottom:1px;
-     padding-top:1px;
-     padding-bottom:1px;
+ 
+     font-weight: normal;
+     color:#767676;
+     font-style: normal;
 }
+.form-label{
+    color:#003145;
+    font-style: normal;
 
+}
 .submit_btn
 {
    color:#767676;
@@ -85,12 +87,17 @@
     width:140px;
     min-width: 50%;
     position:relative;
-}
 
+}
+.btn{
+background-color: red;
+ font-style: normal;
+}
 .alert-cls
 {
        font-weight:normal;
-      color:red;
+       color:red;
+       font-style: normal;
 }
 .passengerCls
 {
@@ -99,6 +106,11 @@
     background-image: url("/assets/images/af_pattern_bg.png");
     color:white;
     padding-top:20px;
+}
+.passengerDetail-cls
+{
+    font-weight:bold;
+    font-style: normal;
 }
 @media (min-width: 500px) {
     .formContainer {

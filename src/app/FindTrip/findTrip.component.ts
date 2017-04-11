@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FindTripService } from './findTrip.service';
 import { FindTripModel } from './findTripDataModel';
-import { validateMessages } from './findTripErrorMessages';
+import { validateMessages, warningMsg } from './findTripErrorMessages';
 
 @Component({
     templateUrl: 'findTrip.html',
@@ -11,8 +11,15 @@ import { validateMessages } from './findTripErrorMessages';
 
 export class FindTripComponent implements OnChanges {
     findTripForm: FormGroup;
+    @Input() findTripModel: FindTripModel;
+
     disabled: false;
     bookingData: {};
+    formErrors = {
+        'bookingCode': '',
+        'familyName': ''
+    }
+
     // Passenger Detail from response
     passengerName: string;
     type: string;
@@ -20,9 +27,7 @@ export class FindTripComponent implements OnChanges {
     destination: string;
 
     //End of passnger details
-
     errorMessage: string;
-    @Input() findTripModel: FindTripModel;
     submitWarning: string = '';
 
     constructor(private findTripService: FindTripService) {
@@ -72,12 +77,6 @@ export class FindTripComponent implements OnChanges {
         }
     }
 
-
-    formErrors = {
-        'bookingCode': '',
-        'familyName': ''
-    }
-
     checkButtonDisabled() {
         return !this.findTripForm.valid;
     }
@@ -96,7 +95,7 @@ export class FindTripComponent implements OnChanges {
             );
         }
         else {
-            this.submitWarning = "Please provide Booking Code and family Name"
+            this.submitWarning = warningMsg;
         }
     }
 
@@ -111,6 +110,8 @@ export class FindTripComponent implements OnChanges {
         }
         return queryObj;
     }
+
+//Process response JSON
     processResponse(data: any) {
         this.passengerName = data["passengers"].firstName + " , " + data["passengers"].lastName;
         this.type = data["itinerary"].type;

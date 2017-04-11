@@ -10,3 +10,4 @@ export const validateMessages = {
         'pattern': 'family name accepts alphabets only'
     }
 }
+export const warningMsg = "Please provide Booking Code and family Name";

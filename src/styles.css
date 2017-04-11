@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+	font-family: 'Florencesans SC Exp';
+	src: url('./assets/fonts/FlorencesansSCExp-BoldItalic.eot');
+	src: url('./assets/fonts/FlorencesansSCExp-BoldItalic.eot?#iefix') format('embedded-opentype'),
+		url('./assets/fonts/FlorencesansSCExp-BoldItalic.woff2') format('woff2'),
+		url('./assets/fonts/FlorencesansSCExp-BoldItalic.woff') format('woff'),
+		url('./assets/fonts/FlorencesansSCExp-BoldItalic.ttf') format('truetype'),
+		url('./assets/fonts/FlorencesansSCExp-BoldItalic.svg#FlorencesansSCExp-BoldItalic') format('svg');
+	font-weight: bold;
+	font-style: normal;
+}
